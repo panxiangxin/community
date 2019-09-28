@@ -11,6 +11,7 @@ public class User {
 	private String accountId;
 	private String token;
 	private Long gmtCreate;
+	private String bio;
 	
 	@Override
 	public String toString() {
@@ -20,8 +21,17 @@ public class User {
 					   ", accountId='" + accountId + '\'' +
 					   ", token='" + token + '\'' +
 					   ", gmtCreate=" + gmtCreate +
+					   ", bio='" + bio + '\'' +
 					   ", gmtModified=" + gmtModified +
 					   '}';
+	}
+	
+	public String getBio() {
+		return bio;
+	}
+	
+	public void setBio(String bio) {
+		this.bio = bio;
 	}
 	
 	public int getId() {
