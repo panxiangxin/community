@@ -22,20 +22,9 @@ public class PaginationDTO {
 	private Integer totalPage;
 	private List<Integer> pages = new ArrayList<>();
 	
-	public void setPagination(Integer totalCount, Integer page, Integer size) {
+	public void setPagination(Integer totalPage, Integer page) {
 		
-		if(totalCount%size == 0){
-			totalPage = totalCount/size;
-		}else {
-			totalPage = totalCount/size + 1;
-		}
-		//验证page
-		if(page < 1){
-			page = 1;
-		}
-		if (page > totalPage) {
-			page = totalPage;
-		}
+		this.totalPage = totalPage;
 		this.page = page;
 		//计算pages 最大有7页
 		pages.add(page);
@@ -54,7 +43,7 @@ public class PaginationDTO {
 			showPrevious = true;
 		}
 		//是否展示下一页
-		if(page == totalPage){
+		if(page.equals(totalPage)){
 			showNext = false;
 		}else {
 			showNext = true;
