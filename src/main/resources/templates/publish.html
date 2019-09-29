@@ -3,9 +3,9 @@
 <head>
     <title>码匠社区 - 发布</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/community.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.css">
 
 
 </head>
@@ -19,6 +19,7 @@
         <hr>
 
         <form action="/publish" method="post">
+            <input type="hidden" name="id" th:value="${id}">
             <div class="form-group">
                 <label for="title">问题标题（简单概要）</label>
                 <input type="text" class="form-control" id="title" name="title" th:value="${title}" placeholder="问题标题.." >
@@ -48,7 +49,7 @@
 </div>
 
 
-<script src="js/jquery-3.4.1.js" type="application/javascript"></script>
-<script src="js/bootstrap.min.js" type="application/javascript"></script>
+<script src="/js/jquery-3.4.1.js" type="application/javascript"></script>
+<script src="/js/bootstrap.min.js" type="application/javascript"></script>
 </body>
 </html>

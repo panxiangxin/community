@@ -1,10 +1,7 @@
 package life.pxx.community.mapper;
 
 import life.pxx.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -34,4 +31,7 @@ public interface QuestionMapper {
 	
 	@Select("select * from QUESTION where ID = #{id}")
 	Question getById(@Param("id") Integer id);
+	
+	@Update("update QUESTION set TITLE = #{title},DESCRIPTION = #{description},GMT_MODIFIED = #{gmtModified},TAG = #{tag} where ID = #{id}")
+	void update(Question question);
 }
