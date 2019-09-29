@@ -23,7 +23,6 @@
             </div>
             <div class="media-body">
                 <h4 class="media-heading" th:text="${question.getTitle()}"></h4>
-                <span th:text="${question.getDescription()}"></span><br>
                 <span class="text-desc">
                     <span th:text="${question.getCommentCount()}">
                 </span> 个回复• <span th:text="${question.getViewCount()}"></span> 次浏览 • <span th:text="${#dates.format(question.getGmtCreate(),'yyyy-MM-dd HH:mm')}"></span></span>
@@ -65,7 +64,7 @@
 </div>
 
 
-<script src="js/jquery-3.4.1.js" type="application/javascript"></script>
-<script src="js/bootstrap.min.js" type="application/javascript"></script>
+<script src="/js/jquery-3.4.1.js" type="application/javascript"></script>
+<script src="/js/bootstrap.min.js" type="application/javascript"></script>
 </body>
 </html>
