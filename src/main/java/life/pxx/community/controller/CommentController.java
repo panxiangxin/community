@@ -1,6 +1,6 @@
 package life.pxx.community.controller;
 
-import life.pxx.community.dto.CommentDTO;
+import life.pxx.community.dto.CommentCreateDTO;
 import life.pxx.community.dto.ResultDTO;
 import life.pxx.community.exception.CustomizeErrorCode;
 import life.pxx.community.mapper.CommentMapper;
@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author pxx
@@ -33,7 +31,7 @@ public class CommentController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/comment", method = RequestMethod.POST)
-	public Object post(@RequestBody CommentDTO commentDTO, HttpServletRequest request) {
+	public Object post(@RequestBody CommentCreateDTO commentCreateDTO, HttpServletRequest request) {
 		
 		User  user = (User) request.getSession().getAttribute("user");
 		if (user == null) {
@@ -41,9 +39,9 @@ public class CommentController {
 		}
 		
 		Comment record = new Comment();
-		record.setParentId(commentDTO.getParentId());
-		record.setContent(commentDTO.getContent());
-		record.setType(commentDTO.getType());
+		record.setParentId(commentCreateDTO.getParentId());
+		record.setContent(commentCreateDTO.getContent());
+		record.setType(commentCreateDTO.getType());
 		record.setGmtCreate(System.currentTimeMillis());
 		record.setGmtModified(record.getGmtCreate());
 		record.setLikeCount(0);
