@@ -36,7 +36,7 @@ public class PublishController {
 			@RequestParam("title") String title,
 			@RequestParam("description") String description,
 			@RequestParam("tag") String tag,
-			@RequestParam("id") Integer id,
+			@RequestParam("id") Long id,
 			HttpServletRequest request,
 			Model model
 	){
@@ -61,7 +61,7 @@ public class PublishController {
 		
 		if (user == null) {
 			model.addAttribute("error","用户未登录");
-			return "publish";
+			return "/publish";
 		}else {
 			Question question = new Question();
 			question.setTitle(title);
@@ -75,7 +75,7 @@ public class PublishController {
 	}
 	
 	@GetMapping("/publish/{id}")
-	public String edit(@PathVariable(name = "id") Integer id,
+	public String edit(@PathVariable(name = "id") Long id,
 					   Model model) {
 		QuestionDTO question = questionService.getById(id);
 		model.addAttribute("title",question.getTitle());

@@ -2,7 +2,6 @@ package life.pxx.community.controller;
 
 import life.pxx.community.dto.AccessTokenDTO;
 import life.pxx.community.dto.GithubUser;
-import life.pxx.community.mapper.UserMapper;
 import life.pxx.community.model.User;
 import life.pxx.community.provider.GithubProvider;
 import life.pxx.community.service.UserService;

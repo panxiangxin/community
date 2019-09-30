@@ -26,7 +26,6 @@ import java.util.List;
 @Service
 public class QuestionService {
 	
-	
 	@Autowired
 	private QuestionExtMapper questionExtMapper;
 	@Autowired
@@ -34,7 +33,7 @@ public class QuestionService {
 	@Autowired
 	private QuestionMapper questionMapper;
 	
-	public PaginationDTO list(int userId, Integer page, Integer size) {
+	public PaginationDTO list(Long userId, Integer page, Integer size) {
 		
 		PaginationDTO paginationDTO = new PaginationDTO();
 		QuestionExample example = new QuestionExample();
@@ -54,11 +53,11 @@ public class QuestionService {
 			page = totalPage;
 		}
 		paginationDTO.setPagination(totalPage,page);
-		Integer offset = size*(page - 1);
+		int offset = size*(page - 1);
 		QuestionExample example1 = new QuestionExample();
 		example.createCriteria()
 				.andCreatorEqualTo(userId);
-		List<Question> questions = questionMapper.selectByExampleWithRowbounds(example1, new RowBounds(offset, size));
+		List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(example1, new RowBounds(offset, size));
 		List<QuestionDTO> questionDTOS=new ArrayList<>();
 		
 		for (Question question: questions) {
@@ -93,7 +92,7 @@ public class QuestionService {
 		paginationDTO.setPagination(totalPage,page);
 		
 		Integer offset = size*(page - 1);
-		List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
+		List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
 		List<QuestionDTO> questionDTOS=new ArrayList<>();
 		
 		for (Question question: questions) {
@@ -108,7 +107,7 @@ public class QuestionService {
 		return paginationDTO;
 	}
 	
-	public QuestionDTO getById(Integer id) {
+	public QuestionDTO getById(Long id) {
 		
 		Question question = questionMapper.selectByPrimaryKey(id);
 		if (question == null) {
@@ -125,7 +124,7 @@ public class QuestionService {
 		if(question.getId() == null){
 			question.setGmtCreate(System.currentTimeMillis());
 			question.setGmtModified(question.getGmtCreate());
-			questionMapper.insert(question);
+			questionMapper.insertSelective(question);
 		}else {
 			question.setGmtModified(System.currentTimeMillis());
 			int updated = questionMapper.updateByPrimaryKeySelective(question);
@@ -135,7 +134,7 @@ public class QuestionService {
 		}
 	}
 	
-	public void inView(Integer id) {
+	public void inView(Long id) {
 		Question question = new Question();
 		question.setId(id);
 		question.setViewCount(1);

@@ -1,7 +1,6 @@
 package life.pxx.community.controller;
 
 import life.pxx.community.dto.QuestionDTO;
-import life.pxx.community.mapper.QuestionMapper;
 import life.pxx.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +20,7 @@ public class QuestionController {
 	private QuestionService questionService;
 	
 	@GetMapping("/question/{id}")
-	public String question(@PathVariable(value = "id") Integer id, Model model) {
+	public String question(@PathVariable(value = "id") Long id, Model model) {
 		
 		QuestionDTO questionDTO = questionService.getById(id);
 		questionService.inView(id);
