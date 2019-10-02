@@ -14,7 +14,9 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
 	SYSTEM_ERROR("服务器异常",2004),
 	TYPE_PARAM_WRONG("评论类型不存在",2005),
 	COMMENT_NOT_FOUND("评论不存在",2006),
-	NO_LOGIN("需要先登录才能进行操作！",2003);
+	NO_LOGIN("需要先登录才能进行操作！",2003),
+	COMMENT_IS_EMPTY("评论内容不能为空！",2007),
+	;
 	
 	private String message;
 	private Integer code;
