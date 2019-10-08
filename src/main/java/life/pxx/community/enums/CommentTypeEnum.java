@@ -6,7 +6,10 @@ package life.pxx.community.enums;
  * @Description
  */
 public enum CommentTypeEnum {
-	
+	/**
+	 * 1为提问
+	 * 2为评论
+	 */
 	QUESTION(1),COMMENT(2);
 	private Integer type;
 	
