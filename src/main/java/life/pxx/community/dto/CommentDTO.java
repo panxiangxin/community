@@ -15,6 +15,7 @@ public class CommentDTO {
 	private Long parentId;
 	private Integer type;
 	private Long commentator;
+	private Integer commentCount;
 	private Long gmtCreate;
 	private Long gmtModified;
 	private Integer likeCount;

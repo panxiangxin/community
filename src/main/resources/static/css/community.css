@@ -58,6 +58,13 @@ body{
 .menu .icon:hover{
     color: #499ef3;
 }
+.menu .comment-icon {
+    cursor: pointer;
+    font-size: 15px;
+}
+.menu .comment-icon:hover {
+    color: #499ef3;
+}
 .comments {
     margin-bottom: 15px;
     padding-bottom: 5px;
