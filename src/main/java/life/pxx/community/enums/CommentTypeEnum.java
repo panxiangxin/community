@@ -3,7 +3,7 @@ package life.pxx.community.enums;
 /**
  * @author pxx
  * Date 2019/9/30 10:08
- * @Description
+ * @Description 关于评论类型
  */
 public enum CommentTypeEnum {
 	/**

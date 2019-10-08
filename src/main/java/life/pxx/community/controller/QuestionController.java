@@ -1,8 +1,8 @@
 package life.pxx.community.controller;
 
-import life.pxx.community.dto.CommentCreateDTO;
 import life.pxx.community.dto.CommentDTO;
 import life.pxx.community.dto.QuestionDTO;
+import life.pxx.community.enums.CommentTypeEnum;
 import life.pxx.community.service.CommentService;
 import life.pxx.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class QuestionController {
 	public String question(@PathVariable(value = "id") Long id, Model model) {
 		
 		QuestionDTO questionDTO = questionService.getById(id);
-		List<CommentDTO> comments = commentService.listByQuestionId(id);
+		List<CommentDTO> comments = commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
 		questionService.inView(id);
 		model.addAttribute("question",questionDTO);
 		model.addAttribute("comments",comments);

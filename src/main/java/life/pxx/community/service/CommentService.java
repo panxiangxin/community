@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -36,11 +35,11 @@ public class CommentService {
 	@Autowired
 	QuestionExtMapper questionExtMapper;
 	
-	public List<CommentDTO> listByQuestionId(Long id) {
+	public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {
 		CommentExample example = new CommentExample();
 		example.createCriteria()
 				.andParentIdEqualTo(id)
-				.andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
+				.andTypeEqualTo(type.getType());
 		example.setOrderByClause("gmt_create desc");
 		List<Comment> comments = commentMapper.selectByExampleWithBLOBs(example);
 		if(comments.size() == 0){

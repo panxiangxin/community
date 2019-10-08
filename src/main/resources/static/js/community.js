@@ -1,8 +1,10 @@
 function post() {
     var questionId = $("#question_id").val();
     var commentContent = $("#comment_content").val();
-
-    if(!commentContent){
+    comment2Target(questionId,commentContent,1);
+}
+function comment2Target(targetId, content, type) {
+    if(!content){
         alert("回复内容不能为空~~~");
         return;
     }
@@ -11,9 +13,9 @@ function post() {
         url: "/comment",
         contentType: "application/json",
         data: JSON.stringify({
-            "parentId": questionId,
-            "type": 1,
-            "content": commentContent
+            "parentId": targetId,
+            "type": type,
+            "content": content
         }),
         success: function (response) {
             if(response.code === 200){
@@ -32,4 +34,28 @@ function post() {
         },
         dataType: "json"
     })
+}
+function comment(e) {
+        var id = e.getAttribute("data-id");
+        var content = $("#input"+id).val();
+        comment2Target(id,content,2);
+}
+/**
+ * 展开二级评论
+ **/
+function collapseComments(e) {
+
+    var id = e.getAttribute("data-id");
+    var comments = $("#comment-"+id);
+    var collapse = e.getAttribute("data-collapse");
+    if(collapse){
+        comments.removeClass("in");
+        e.removeAttribute("data-collapse");
+        e.classList.remove("active");
+    }else{
+        comments.addClass("in");
+        e.setAttribute("data-collapse", "in");
+        e.classList.add("active");
+
+    }
 }
