@@ -2,6 +2,8 @@ package life.pxx.community.service;
 
 import life.pxx.community.dto.CommentDTO;
 import life.pxx.community.enums.CommentTypeEnum;
+import life.pxx.community.enums.NotificationEnum;
+import life.pxx.community.enums.NotificationStatusEnum;
 import life.pxx.community.exception.CustomizeErrorCode;
 import life.pxx.community.exception.CustomizeException;
 import life.pxx.community.mapper.*;
@@ -24,15 +26,17 @@ import java.util.stream.Collectors;
 @Service
 public class CommentService {
 	@Autowired
-	CommentMapper commentMapper;
+	private CommentMapper commentMapper;
 	@Autowired
-	UserMapper userMapper;
+	private UserMapper userMapper;
 	@Autowired
-	QuestionMapper questionMapper;
+	private QuestionMapper questionMapper;
 	@Autowired
-	QuestionExtMapper questionExtMapper;
+	private QuestionExtMapper questionExtMapper;
 	@Autowired
-	CommentExtMapper commentExtMapper;
+	private CommentExtMapper commentExtMapper;
+	@Autowired
+	private NotificationMapper notificationMapper;
 	
 	public List<CommentDTO> listByTargetId(Long id, CommentTypeEnum type) {
 		CommentExample example = new CommentExample();
@@ -66,7 +70,7 @@ public class CommentService {
 	}
 	
 	@Transactional
-	public void insert(Comment record) {
+	public void insert(Comment record, User commentator) {
 		if (record.getParentId() == null || record.getParentId() == 0) {
 			throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
 		}
@@ -79,12 +83,20 @@ public class CommentService {
 			if (dbComment == null) {
 				throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
 			}
+			//回复问题
+			Question question = questionMapper.selectByPrimaryKey(dbComment.getParentId());
+			if (question == null) {
+				throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+			}
 			commentMapper.insertSelective(record);
 			//增加评论数
 			Comment parentComment = new Comment();
 			parentComment.setId(record.getParentId());
 			parentComment.setCommentCount(1);
 			commentExtMapper.incCommentCount(parentComment);
+			//增加通知消息
+			createNotify(record, dbComment.getCommentator(), NotificationEnum.REPLY_COMMENT, question.getTitle(), commentator.getName(), question.getId());
+			
 		} else {
 			//回复问题
 			Question question = questionMapper.selectByPrimaryKey(record.getParentId());
@@ -94,6 +106,23 @@ public class CommentService {
 			commentMapper.insertSelective(record);
 			question.setCommentCount(1);
 			questionExtMapper.incCommentCount(question);
+			
+			//创建通知
+			createNotify(record,question.getCreator(),NotificationEnum.REPLY_QUESTION, commentator.getName(),question.getTitle(), question.getId());
 		}
+	}
+	
+	private void createNotify(Comment record, Long receiver, NotificationEnum notificationEnum, String notifierName, String outerTitle, Long outerId) {
+		
+		Notification notification = new Notification();
+		notification.setNotifier(record.getCommentator());
+		notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
+		notification.setReceiver(receiver);
+		notification.setOuterid(outerId);
+		notification.setType(notificationEnum.getType());
+		notification.setGmtCreate(System.currentTimeMillis());
+		notification.setNotifierName(notifierName);
+		notification.setOuterTitle(outerTitle);
+		notificationMapper.insert(notification);
 	}
 }

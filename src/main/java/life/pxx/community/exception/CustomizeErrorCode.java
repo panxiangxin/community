@@ -16,6 +16,8 @@ public enum CustomizeErrorCode implements ICustomizeErrorCode{
 	COMMENT_NOT_FOUND("评论不存在",2006),
 	NO_LOGIN("需要先登录才能进行操作！",2003),
 	COMMENT_IS_EMPTY("评论内容不能为空！",2007),
+	READ_NOTIFICATION_FAILED("兄弟，你这是都别人信息呢！",2008),
+	NOTIFICATION_NOT_FOUND("消息不翼而飞了！",2009),
 	;
 	
 	private String message;
