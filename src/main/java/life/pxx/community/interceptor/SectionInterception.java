@@ -3,6 +3,7 @@ package life.pxx.community.interceptor;
 import life.pxx.community.mapper.UserMapper;
 import life.pxx.community.model.User;
 import life.pxx.community.model.UserExample;
+import life.pxx.community.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -23,7 +24,8 @@ public class SectionInterception implements HandlerInterceptor {
 	
 	@Autowired
 	private UserMapper userMapper;
-	
+	@Autowired
+	private NotificationService notificationService;
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		Cookie[] cookies = request.getCookies();
@@ -36,6 +38,8 @@ public class SectionInterception implements HandlerInterceptor {
 					List<User> users = userMapper.selectByExample(example);
 					if (users.size() != 0) {
 						request.getSession().setAttribute("user", users.get(0));
+						Long unReadCount = notificationService.unReadCount(users.get(0).getId());
+						request.getSession().setAttribute("unReadCount",unReadCount);
 					}
 					break;
 				}

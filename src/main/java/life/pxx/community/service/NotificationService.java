@@ -2,14 +2,14 @@ package life.pxx.community.service;
 
 import life.pxx.community.dto.NotificationDTO;
 import life.pxx.community.dto.PaginationDTO;
-import life.pxx.community.dto.QuestionDTO;
 import life.pxx.community.enums.NotificationEnum;
 import life.pxx.community.enums.NotificationStatusEnum;
 import life.pxx.community.exception.CustomizeErrorCode;
 import life.pxx.community.exception.CustomizeException;
 import life.pxx.community.mapper.NotificationMapper;
-import life.pxx.community.mapper.UserMapper;
-import life.pxx.community.model.*;
+import life.pxx.community.model.Notification;
+import life.pxx.community.model.NotificationExample;
+import life.pxx.community.model.User;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * @author pxx
@@ -31,8 +28,6 @@ public class NotificationService {
 	
 	@Autowired
 	private NotificationMapper notificationMapper;
-	@Autowired
-	private UserMapper userMapper;
 	
 	public PaginationDTO list(Long userId, Integer page, Integer size) {
 		

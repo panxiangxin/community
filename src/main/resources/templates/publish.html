@@ -6,8 +6,11 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/community.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.css">
-
-
+    <link rel="stylesheet" href="/editormd/css/editormd.css" />
+    <script src="/js/jquery-3.4.1.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/community.js" type="application/javascript"></script>
+    <script src="/editormd/editormd.min.js"></script>
 </head>
 <body>
 <div th:insert="navigation :: nav"></div>
@@ -24,10 +27,21 @@
                 <label for="title">问题标题（简单概要）</label>
                 <input type="text" class="form-control" id="title" name="title" th:value="${title}" placeholder="问题标题.." >
             </div>
-            <div class="form-group">
+            <div class="form-group" id="question-editor">
                 <label for="description">问题补充（必填，请参照右边提示）:</label>
-                <textarea  class="form-control" id="description" name="description" th:text="${description}" rows="10" ></textarea>
+                <textarea  class="form-control" id="description" name="description" style="display: none" th:text="${description}" rows="10" ></textarea>
             </div>
+            <script type="text/javascript">
+                $(function() {
+                    var editor = editormd("question-editor", {
+                         width : "100%",
+                         height : "350px",
+                        path : "/editormd/lib/",
+                        delay: 0,
+                        placeholder: "请输入问题描述..."
+                    });
+                });
+            </script>
             <div class="form-group">
                 <label for="tag">添加标签:</label>
                 <input type="text" class="form-control" id="tag" name="tag"
@@ -57,7 +71,6 @@
         </form>
     </div>
 
-
     <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
         <h3>问题发起指南</h3>
         <ul>
@@ -68,9 +81,5 @@
     </div>
 </div>
 
-
-<script src="/js/jquery-3.4.1.js" type="application/javascript"></script>
-<script src="/js/bootstrap.min.js" type="application/javascript"></script>
-<script src="/js/community.js" type="application/javascript"></script>
 </body>
 </html>
