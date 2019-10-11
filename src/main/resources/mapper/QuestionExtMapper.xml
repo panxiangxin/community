@@ -56,20 +56,30 @@
       where ID = #{id,jdbcType=BIGINT}
     </update>
 
-    <select id="countBySearch" parameterType="life.pxx.community.dto.QueryQuestionDTO" resultType="java.lang.Integer">
+    <select id="countBySearchAndTag" parameterType="life.pxx.community.dto.QueryQuestionDTO" resultType="java.lang.Integer">
       select count(*)
       from QUESTION
+      <where>
       <if test="search != null and search != ''">
-      where TITLE REGEXP #{search}
+        and TITLE REGEXP #{search}
       </if>
+      <if test="tag != null and tag != ''">
+        and TAG REGEXP #{tag}
+      </if>
+      </where>
     </select>
-  <select id="selectBySearch" parameterType="life.pxx.community.dto.QueryQuestionDTO" resultMap="BaseResultMap" >
+  <select id="selectBySearchAndTag" parameterType="life.pxx.community.dto.QueryQuestionDTO" resultMap="BaseResultMap" >
     select
     <include refid="Base_Column_List" />
     from QUESTION
+    <where>
     <if test="search != null and search != ''">
-    where TITLE REGEXP #{search,jdbcType=VARCHAR}
+      and TITLE REGEXP #{search,jdbcType=VARCHAR}
     </if>
+    <if test="tag != null and tag != ''">
+      and TAG REGEXP #{tag,jdbcType=VARCHAR}
+    </if>
+    </where>
     order by GMT_CREATE desc
     limit #{page,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
   </select>

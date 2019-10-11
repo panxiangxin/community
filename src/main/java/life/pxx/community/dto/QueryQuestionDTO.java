@@ -12,4 +12,5 @@ public class QueryQuestionDTO {
 	private String search;
 	private Integer size;
 	private Integer page;
+	private String tag;
 }

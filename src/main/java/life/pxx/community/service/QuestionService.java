@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,7 +76,7 @@ public class QuestionService {
 		return paginationDTO;
 	}
 	
-	public PaginationDTO list(String search,Integer page, Integer size) {
+	public PaginationDTO list(String search, String tag, Integer page, Integer size) {
 		if (StringUtils.isNotBlank(search)) {
 			String[] tags = StringUtils.split(search, " ");
 			search = String.join("|", tags);
@@ -86,7 +85,9 @@ public class QuestionService {
 		PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
 		QueryQuestionDTO queryQuestionDTO = new QueryQuestionDTO();
 		queryQuestionDTO.setSearch(search);
-		Integer totalCount = (int)questionExtMapper.countBySearch(queryQuestionDTO);
+		queryQuestionDTO.setTag(tag);
+		
+		Integer totalCount = questionExtMapper.countBySearchAndTag(queryQuestionDTO);
 		Integer totalPage;
 		if(totalCount%size == 0){
 			totalPage = totalCount/size;
@@ -106,7 +107,7 @@ public class QuestionService {
 		example.setOrderByClause("gmt_create desc");
 		queryQuestionDTO.setPage(offset);
 		queryQuestionDTO.setSize(size);
-		List<Question> questions = questionExtMapper.selectBySearch(queryQuestionDTO);
+		List<Question> questions = questionExtMapper.selectBySearchAndTag(queryQuestionDTO);
 		List<QuestionDTO> questionDTOS=new ArrayList<>();
 		
 		for (Question question: questions) {
