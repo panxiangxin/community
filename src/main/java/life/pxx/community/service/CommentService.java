@@ -114,6 +114,9 @@ public class CommentService {
 	
 	private void createNotify(Comment record, Long receiver, NotificationEnum notificationEnum, String notifierName, String outerTitle, Long outerId) {
 		
+		if (receiver.equals(record.getCommentator())) {
+			return;
+		}
 		Notification notification = new Notification();
 		notification.setNotifier(record.getCommentator());
 		notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());

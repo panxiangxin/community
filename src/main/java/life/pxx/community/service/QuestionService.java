@@ -1,6 +1,7 @@
 package life.pxx.community.service;
 
 import life.pxx.community.dto.PaginationDTO;
+import life.pxx.community.dto.QueryQuestionDTO;
 import life.pxx.community.dto.QuestionDTO;
 import life.pxx.community.exception.CustomizeErrorCode;
 import life.pxx.community.exception.CustomizeException;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,10 +77,16 @@ public class QuestionService {
 		return paginationDTO;
 	}
 	
-	public PaginationDTO list(Integer page, Integer size) {
+	public PaginationDTO list(String search,Integer page, Integer size) {
+		if (StringUtils.isNotBlank(search)) {
+			String[] tags = StringUtils.split(search, " ");
+			search = String.join("|", tags);
+		}
 		
 		PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
-		Integer totalCount = (int)questionMapper.countByExample(new QuestionExample());
+		QueryQuestionDTO queryQuestionDTO = new QueryQuestionDTO();
+		queryQuestionDTO.setSearch(search);
+		Integer totalCount = (int)questionExtMapper.countBySearch(queryQuestionDTO);
 		Integer totalPage;
 		if(totalCount%size == 0){
 			totalPage = totalCount/size;
@@ -96,7 +104,9 @@ public class QuestionService {
 		Integer offset = size*(page - 1);
 		QuestionExample example = new QuestionExample();
 		example.setOrderByClause("gmt_create desc");
-		List<Question> questions = questionMapper.selectByExampleWithBLOBsWithRowbounds(example, new RowBounds(offset, size));
+		queryQuestionDTO.setPage(offset);
+		queryQuestionDTO.setSize(size);
+		List<Question> questions = questionExtMapper.selectBySearch(queryQuestionDTO);
 		List<QuestionDTO> questionDTOS=new ArrayList<>();
 		
 		for (Question question: questions) {
