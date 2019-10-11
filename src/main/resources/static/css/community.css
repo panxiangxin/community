@@ -113,3 +113,24 @@ body{
     padding: 10px 25%;
     color: #666666;
 }
+.tags-hot .text{
+    display: inline-block;
+    height: 20px;
+    line-height: 16px;
+    padding: 2px 5px;
+    background-color: #99cfff;
+    font-size: 12px;
+    color: #fff;
+    border-radius: 4px;
+}
+.tags-hot a{
+    cursor: pointer;
+    text-decoration: none;
+}
+.tags-hot .hot-tag-desc {
+    font-size: 12px;
+    color: #999999;
+}
+.tags-hot a:hover {
+    background-color: #428bca;
+}

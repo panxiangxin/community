@@ -14,32 +14,30 @@ import java.util.*;
 @Data
 @Component
 public class HotTagCache {
-	private List<String> hotTags = new ArrayList<>();
+	private List<HotTagDTO> hotTags = new ArrayList<>();
 	
-	public void updateTags(Map<String, Integer> tags) {
+	public void updateTags(Map<String, HotTagDTO> tags) {
 		int max = 5;
 		PriorityQueue<HotTagDTO> priorityQueue = new PriorityQueue<>(max);
 		
 		tags.forEach((name,priority)->{
-			HotTagDTO hotTagDTO = new HotTagDTO();
-			hotTagDTO.setName(name);
-			hotTagDTO.setPriority(priority);
 			
 			if(priorityQueue.size() < max){
-				priorityQueue.add(hotTagDTO);
+				priorityQueue.add(priority);
 			}else {
 				HotTagDTO minTag = priorityQueue.peek();
-				if (hotTagDTO.compareTo(minTag) > 0) {
+				if (priority.compareTo(minTag) > 0) {
 					priorityQueue.poll();
-					priorityQueue.add(hotTagDTO);
+					priorityQueue.add(priority);
 				}
 			}
 		});
-		List<String> list = new ArrayList<>();
+		List<HotTagDTO> list = new ArrayList<>();
 		while (priorityQueue.size() != 0) {
 			HotTagDTO hotTagDTO = priorityQueue.poll();
-			list.add(0,hotTagDTO.getName());
+			list.add(0,hotTagDTO);
 		}
 		hotTags = list;
 	}
+	
 }

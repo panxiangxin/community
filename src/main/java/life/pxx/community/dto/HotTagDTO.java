@@ -10,7 +10,8 @@ import lombok.Data;
 @Data
 public class HotTagDTO implements Comparable<HotTagDTO>{
 		private String name;
-		private Integer priority;
+		private Integer commentCount;
+		private Integer questionCount;
 	
 	/**
 	 * Compares this object with the specified object for order.  Returns a
@@ -53,6 +54,6 @@ public class HotTagDTO implements Comparable<HotTagDTO>{
 	 */
 	@Override
 	public int compareTo(HotTagDTO o) {
-		return priority - o.priority;
+		return (questionCount*5 +commentCount) - (o.questionCount*5 + o.commentCount);
 	}
 }

@@ -1,6 +1,7 @@
 package life.pxx.community.schedule;
 
 import life.pxx.community.cache.HotTagCache;
+import life.pxx.community.dto.HotTagDTO;
 import life.pxx.community.mapper.QuestionMapper;
 import life.pxx.community.model.Question;
 import life.pxx.community.model.QuestionExample;
@@ -33,18 +34,23 @@ public class HotTagTasks {
 		int limit = 5;
 		log.info("hot schedule start {}", new Date());
 		List<Question> list = new ArrayList<>();
-		Map<String,Integer> priorities = new HashMap<>();
+		Map<String, HotTagDTO> priorities = new HashMap<>();
 		while (offset == 0 || list.size() == limit) {
 			list = questionMapper.selectByExampleWithBLOBsWithRowbounds(new QuestionExample(),new RowBounds(offset,limit));
 			list.forEach(question -> {
 				String[] tags = StringUtils.split(question.getTag(), ",");
 				for (String tag : tags) {
-					Integer priority = priorities.get(tag);
+					HotTagDTO priority = priorities.get(tag);
 					if (priority != null) {
-						priorities.put(tag,priority + 5 +question.getCommentCount());
+						priority.setQuestionCount(priority.getQuestionCount() + 1);
+						priority.setCommentCount(priority.getCommentCount()+ question.getCommentCount());
 					}else {
-						priorities.put(tag, 5 + question.getCommentCount());
+						priority = new HotTagDTO();
+						priority.setName(tag);
+						priority.setQuestionCount(1);
+						priority.setCommentCount(question.getCommentCount());
 					}
+					priorities.put(tag,priority);
 				}
 			});
 			offset += limit;

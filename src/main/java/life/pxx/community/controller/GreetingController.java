@@ -1,6 +1,7 @@
 package life.pxx.community.controller;
 
 import life.pxx.community.cache.HotTagCache;
+import life.pxx.community.dto.HotTagDTO;
 import life.pxx.community.dto.PaginationDTO;
 import life.pxx.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class GreetingController {
 						   HttpServletRequest request) {
 		PaginationDTO paginationDTO = questionService.list(search,tag,page,size);
 		model.addAttribute("pagination",paginationDTO);
-		List<String> hotTags = hotTagCache.getHotTags();
+		List<HotTagDTO> hotTags = hotTagCache.getHotTags();
 		model.addAttribute("tags",hotTags);
 		model.addAttribute("tag",tag);
 		HttpSession session = request.getSession();
