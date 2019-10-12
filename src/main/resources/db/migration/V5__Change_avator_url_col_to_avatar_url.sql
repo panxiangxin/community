@@ -1,1 +1,1 @@
-alter  table user change column AVATOR_URL AVATAR_URL varchar(100)
+alter table user change column avatar_url avatar_url varchar(100)

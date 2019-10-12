@@ -1,5 +1,5 @@
 alter table notification
-	add NOTIFIER_NAME varchar(100);
+	add notifier_name varchar(100);
 
 alter table notification
-	add OUTER_TITLE varchar(256);
+	add outer_title varchar(256);

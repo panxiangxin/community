@@ -7,12 +7,17 @@
 
     <context id="DB2Tables" targetRuntime="MyBatis3">
         <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
-        <jdbcConnection driverClass="org.h2.Driver"
-                        connectionURL="jdbc:h2:~/community;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE"
-                        userId="sa"
-                        password="123">
+<!--        <jdbcConnection driverClass="org.h2.Driver"-->
+<!--                        connectionURL="jdbc:h2:~/community;DB_CLOSE_ON_EXIT=FALSE;AUTO_SERVER=TRUE"-->
+<!--                        userId="sa"-->
+<!--                        password="123">-->
+<!--        </jdbcConnection>-->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://120.77.168.102:3306/mawen?useUnicode=true&amp;characterEncoding=utf8&amp;characterSetResults=utf8&amp;useSSL=false"
+                        userId="root"
+                        password="803309">
+            <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
-
         <javaTypeResolver >
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>

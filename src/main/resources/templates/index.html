@@ -40,7 +40,9 @@
                 <a th:href="@{/(sort='no')}" class="red">消灭零回复</a>
             </li>
         </ul>
-
+        <div th:if="${pagination.totalPage == 0}">
+            <p class="question-null">还么有问题哟~~~~</p>
+        </div>
         <div class="media" th:each="question: ${pagination.data}">
             <div class="media-left">
                 <a href="#">
@@ -55,7 +57,7 @@
             </div>
         </div>
 
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" th:if="${pagination.totalPage != 0}">
             <ul class="pagination">
                 <li th:if="${pagination.showFirstPage}">
                     <a th:href="@{/(page=1,search=${session.search},tag=${tag},sort = ${sort})}" aria-label="Previous">

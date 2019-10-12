@@ -1,1 +1,1 @@
-alter table question MODIFY column CREATOR bigint NOT NULL;
+alter table question MODIFY column creator bigint NOT NULL;
