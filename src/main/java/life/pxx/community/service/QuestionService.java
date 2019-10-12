@@ -79,7 +79,6 @@ public class QuestionService {
 	}
 	
 	public PaginationDTO list(String search, String tag, String sort, Integer page, Integer size) {
-		System.out.println(page+""+size);
 		if (StringUtils.isNotBlank(search)) {
 			String[] tags = StringUtils.split(search, " ");
 			search = Arrays
@@ -133,7 +132,6 @@ public class QuestionService {
 		Integer offset = size*(page - 1);
 		queryQuestionDTO.setPage(offset);
 		queryQuestionDTO.setSize(size);
-		System.out.println(offset+"----"+size);
 		List<Question> questions = questionExtMapper.selectBySearchAndTag(queryQuestionDTO);
 		List<QuestionDTO> questionDTOS=new ArrayList<>();
 		
