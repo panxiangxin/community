@@ -5,6 +5,7 @@ import life.pxx.community.dto.HotTagDTO;
 import life.pxx.community.dto.PaginationDTO;
 import life.pxx.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,8 @@ public class GreetingController {
 	private QuestionService questionService;
 	@Autowired
 	private HotTagCache hotTagCache;
+	@Value("${github.client.id}")
+	private String clientId;
 	
 	@GetMapping("/")
 	public String greeting(Model model,
@@ -43,6 +46,7 @@ public class GreetingController {
 		model.addAttribute("sort",sort);
 		HttpSession session = request.getSession();
 		session.setAttribute("search",search);
+		session.setAttribute("clientId",clientId);
 			return "index";
 	}
 	
