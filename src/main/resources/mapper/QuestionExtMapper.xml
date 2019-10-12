@@ -66,6 +66,12 @@
       <if test="tag != null and tag != ''">
         and TAG REGEXP #{tag}
       </if>
+        <if test="sort != null and sort != '' and sort == 'no'">
+          and comment_count = 0
+        </if>
+        <if test="time != null and time != ''">
+          and gmt_create > #{time}
+        </if>
       </where>
     </select>
   <select id="selectBySearchAndTag" parameterType="life.pxx.community.dto.QueryQuestionDTO" resultMap="BaseResultMap" >
@@ -79,8 +85,25 @@
     <if test="tag != null and tag != ''">
       and TAG REGEXP #{tag,jdbcType=VARCHAR}
     </if>
+      <if test="sort != null and sort != '' and sort == 'no'">
+        and COMMENT_COUNT = 0
+      </if>
+      <if test="time != null">
+        and GMT_CREATE > #{time,jdbcType=BIGINT}
+      </if>
     </where>
-    order by GMT_CREATE desc
+    <if test="sort == null or sort == ''">
+      order by GMT_CREATE desc
+    </if>
+    <if test="sort != null and sort != '' and sort == 'new'">
+      order by GMT_CREATE desc
+    </if>
+    <if test="sort != null and sort != '' and sort == 'no'">
+      order by GMT_CREATE desc
+    </if>
+    <if test="sort != null and sort != '' and  (sort == 'hot' || sort == 'hot7' || sort == 'hot30')">
+      order by COMMENT_COUNT desc
+    </if>
     limit #{page,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
   </select>
 

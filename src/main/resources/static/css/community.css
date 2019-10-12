@@ -134,3 +134,6 @@ body{
 .tags-hot a:hover {
     background-color: #428bca;
 }
+.red {
+    color: red !important;
+}

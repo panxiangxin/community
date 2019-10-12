@@ -13,4 +13,6 @@ public class QueryQuestionDTO {
 	private Integer size;
 	private Integer page;
 	private String tag;
+	private String sort;
+	private Long time;
 }

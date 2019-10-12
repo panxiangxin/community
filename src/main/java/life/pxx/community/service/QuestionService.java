@@ -3,6 +3,7 @@ package life.pxx.community.service;
 import life.pxx.community.dto.PaginationDTO;
 import life.pxx.community.dto.QueryQuestionDTO;
 import life.pxx.community.dto.QuestionDTO;
+import life.pxx.community.enums.SortEnum;
 import life.pxx.community.exception.CustomizeErrorCode;
 import life.pxx.community.exception.CustomizeException;
 import life.pxx.community.mapper.QuestionExtMapper;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,16 +78,38 @@ public class QuestionService {
 		return paginationDTO;
 	}
 	
-	public PaginationDTO list(String search, String tag, Integer page, Integer size) {
+	public PaginationDTO list(String search, String tag, String sort, Integer page, Integer size) {
 		if (StringUtils.isNotBlank(search)) {
 			String[] tags = StringUtils.split(search, " ");
-			search = String.join("|", tags);
+			search = Arrays
+							 .stream(tags)
+							 .filter(StringUtils::isNotBlank)
+							 .map(t -> t.replace("+", "").replace("*", "").replace("?", ""))
+							 .filter(StringUtils::isNotBlank)
+							 .collect(Collectors.joining("|"));
 		}
 		
 		PaginationDTO<QuestionDTO> paginationDTO = new PaginationDTO<>();
 		QueryQuestionDTO queryQuestionDTO = new QueryQuestionDTO();
 		queryQuestionDTO.setSearch(search);
-		queryQuestionDTO.setTag(tag);
+		
+		if (StringUtils.isNotBlank(tag)) {
+			tag = tag.replace("+", "").replace("*", "").replace("?", "");
+			queryQuestionDTO.setTag(tag);
+		}
+		
+		for (SortEnum sortEnum : SortEnum.values()) {
+			if (sortEnum.name().toLowerCase().equals(sort)) {
+				queryQuestionDTO.setSort(sort);
+				if (sortEnum == SortEnum.HOT7) {
+				 queryQuestionDTO.setTime(System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 7);
+				}
+				if (sortEnum == SortEnum.HOT30) {
+					queryQuestionDTO.setTime(System.currentTimeMillis() - 1000L * 60 * 60 * 24 * 30);
+				}
+				break;
+			}
+		}
 		
 		Integer totalCount = questionExtMapper.countBySearchAndTag(queryQuestionDTO);
 		Integer totalPage;
@@ -103,8 +127,6 @@ public class QuestionService {
 		paginationDTO.setPagination(totalPage,page);
 		
 		Integer offset = size*(page - 1);
-		QuestionExample example = new QuestionExample();
-		example.setOrderByClause("gmt_create desc");
 		queryQuestionDTO.setPage(offset);
 		queryQuestionDTO.setSize(size);
 		List<Question> questions = questionExtMapper.selectBySearchAndTag(queryQuestionDTO);
@@ -161,7 +183,12 @@ public class QuestionService {
 				return new ArrayList<>();
 		}
 		String[] tags = StringUtils.split(queryDTO.getTag(), ',');
-		String regexpTag = String.join("|", tags);
+		String regexpTag = Arrays
+								   .stream(tags)
+								   .filter(StringUtils::isNotBlank)
+								   .map(t -> t.replace("+", "").replace("*", "").replace("?", ""))
+								   .filter(StringUtils::isNotBlank)
+								   .collect(Collectors.joining("|"));
 		
 		Question question = new Question();
 		question.setId(queryDTO.getId());
