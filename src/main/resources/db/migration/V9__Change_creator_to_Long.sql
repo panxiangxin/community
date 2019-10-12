@@ -1,1 +1,1 @@
-alter table QUESTION alter column CREATOR bigint NOT NULL;
+alter table QUESTION MODIFY column CREATOR bigint NOT NULL;
