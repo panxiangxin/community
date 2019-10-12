@@ -5,4 +5,6 @@
 
 ``
 mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+mvn clean compile flyway:migrate -Pdev
+mvn clean compile flyway:migrate -Pproduction
 ``
